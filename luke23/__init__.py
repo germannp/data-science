@@ -8,9 +8,9 @@ def _read(text_file):
         return txt.read()
 
 
-module_path = os.path.dirname(__file__)
-if module_path == '':
-    module_path = '.'
+_module_path = os.path.dirname(__file__)
+if _module_path == '':
+    _module_path = '.'
 
-texts = {f.split('.')[0]: _read(os.path.join(module_path, f))
-    for f in os.listdir(module_path) if f.endswith('.txt')}
+texts = {f.split('.')[0]: _read(os.path.join(_module_path, f))
+    for f in os.listdir(_module_path) if f.endswith('.txt')}
