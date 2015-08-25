@@ -1,4 +1,5 @@
 """List & download versions available on BibleGateway"""
+import os
 from lxml.html import parse
 
 
@@ -7,14 +8,24 @@ version_trs = parse('versions.html').xpath('//tr[@data-language]')
 
 def list_versions():
     print('The following versions are available from BibleGateway:')
+    _module_path = os.path.dirname(__file__)
+    if _module_path == '':
+        _module_path = '.'
+    downloaded = [f for f in os.listdir(_module_path) if f.endswith('.txt')]
     for tr in version_trs:
         for span in tr.findall('.//span[@class="language-display"]'):
             print('\n' + span.text)
         for link in tr.findall('.//a[@href]'):
-            # TODO: Print * if already downloaded
             if link.attrib['href'].endswith('#booklist'):
-                print(link.text)
-    print('\nTo download version use `$ python download.py version`.')
+                version = link.text
+                shorthand = version.split('(')[-1][:-1]
+                if any([shorthand in file_name for file_name in downloaded]):
+                    mark = '*'
+                else:
+                    mark = ''
+                print(link.text + mark)
+    print('\nDownloaded versions are marked with an *. To download any version ' \
+        'use `$ python download.py version`.')
 
 
 def download(version):
@@ -36,5 +47,5 @@ def download(version):
 
 
 if __name__ == '__main__':
-    # list_versions()
-    download('LUTH1545')
+    list_versions()
+    # download('LUTH1545')
