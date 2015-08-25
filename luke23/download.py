@@ -1,9 +1,11 @@
 """List & download versions available on BibleGateway"""
 import os
-from lxml.html import parse
+import requests
+from lxml import html
 
 
-version_trs = parse('versions.html').xpath('//tr[@data-language]')
+versions = requests.get('https://www.biblegateway.com/versions/')
+version_trs = html.fromstring(versions.text).xpath('//tr[@data-language]')
 
 
 def list_versions():
@@ -24,18 +26,28 @@ def list_versions():
                 else:
                     mark = ''
                 print(link.text + mark)
-    print('\nDownloaded versions are marked with an *. To download any version ' \
-        'use `$ python download.py version`.')
+    print('\nDownloaded versions are marked with an *. To download additional ' \
+        'versions use `$ python download.py version version1 ...`.')
 
 
 def download(version):
     """Download version of Luke 2 & 3 and save as lang-version.txt"""
     print('Downloading ' + version)
-    luke2 = parse('luke2.html').xpath('string()').split(version)[6][2:]
-    luke3 = parse('luke3.html').xpath('string()').split(version)[6][2:]
+    base_url = 'https://www.biblegateway.com/passage/?search=Luke+'
+    luke2_page = requests.get(base_url + '2&version=' + version)
+    luke3_page = requests.get(base_url + '3&version=' + version)
+
+    if 'Version not found' in luke2_page.text:
+        print('Version ' + version + ' not found!')
+        return
+
+    luke2 = html.fromstring(luke2_page.text).xpath('string()').split(version)[6][2:]
+    luke3 = html.fromstring(luke3_page.text).xpath('string()').split(version)[6][2:]
 
     luke2 = luke2.split('\n')[0] # Remove copyright note
     luke3 = luke3.split('23')[0] # Cut off at verse 22.
+
+    # TODO: Remove footnotes and heading at the end.
 
     for tr in version_trs:
         if version in tr.xpath('string()'):
@@ -47,5 +59,17 @@ def download(version):
 
 
 if __name__ == '__main__':
-    list_versions()
-    # download('LUTH1545')
+    import argparse
+
+    parser = argparse.ArgumentParser(description='List & download versions '
+        'of Luke 2 & 3 from BibleGateway.')
+    parser.add_argument('-l', '--list', action='store_true',
+        help='list available versions')
+    parser.add_argument('versions', metavar='versions', type=str, nargs='*',
+        help='versions to download')
+    args = parser.parse_args()
+
+    if args.list == True or (args.list == False and len(args.versions) == 0):
+        list_versions()
+    for version in args.versions:
+        download(version)
