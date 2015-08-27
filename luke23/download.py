@@ -1,5 +1,6 @@
 """List & download versions available on BibleGateway"""
 import os
+import string
 import requests
 from lxml import html
 
@@ -31,7 +32,7 @@ def list_versions():
 
 
 def download(version):
-    """Download version of Luke 2 & 3 and save as lang-version.txt"""
+    """Download version of Luke 2 & 3 as lang-version.txt w/o footnotes"""
     print('Downloading ' + version)
     base_url = 'https://www.biblegateway.com/passage/?search=Luke+'
     luke2_page = requests.get(base_url + '2&version=' + version)
@@ -47,7 +48,18 @@ def download(version):
     luke2 = luke2.split('\n')[0] # Remove copyright note
     luke3 = luke3.split('23')[0] # Cut off at verse 22.
 
-    # TODO: Remove footnotes and heading at the end.
+    # Remove trailing headline (if any)
+    while luke3.strip()[-1].isalnum():
+        luke3 = luke3.strip()[:-1]
+    luke3 = luke3.strip()
+
+    luke23 = luke2 + luke3
+    for char in string.ascii_lowercase:
+        footnote = '[' + char + ']'
+        if footnote in luke23:
+            luke23 = luke23.replace(footnote, '')
+        else:
+            break
 
     for tr in version_trs:
         if version in tr.xpath('string()'):
@@ -55,7 +67,7 @@ def download(version):
             break
 
     with open(lang + '-' + version + '.txt', 'w') as file:
-        file.write((luke2 + luke3).replace(u'\xa0', u' '))
+        file.write((luke23).replace(u'\xa0', u' '))
 
 
 if __name__ == '__main__':
