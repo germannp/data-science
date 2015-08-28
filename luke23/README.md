@@ -10,3 +10,4 @@ Sources
 -------
 Many versions are availble from [BibleGateway.com](http://www.biblegateway.com/). Additionally we collected some more exotic translations from the following sources:
 * gsw-BE: Ds nöie Teschtament Bärndütsch, (c) Berchtold Haller Verlag, Bern.
+* gsw-VS: Ds Niww Teschtamänt uf Wallisertitsch, (c) Rotten Verlag, Visp.
