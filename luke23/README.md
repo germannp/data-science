@@ -9,5 +9,6 @@ To print a list with the versions available from [BibleGateway.com](http://www.b
 Sources
 -------
 Many versions are availble from [BibleGateway.com](http://www.biblegateway.com/). Additionally we collected some more exotic translations from the following sources:
+* cat-BCI: Bíblia Catalana, Traducció Interconfessional, (c) Sociedad Bíblica de España, via [Bible.com](https://www.bible.com/versions/335-bci-biblia-catalana-traduccion-interconfesional).
 * gsw-BE: Ds nöie Teschtament Bärndütsch, (c) Berchtold Haller Verlag, Bern.
 * gsw-VS: Ds Niww Teschtamänt uf Wallisertitsch, (c) Rotten Verlag, Visp.
