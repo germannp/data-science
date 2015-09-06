@@ -1,6 +1,9 @@
 """Dendrogram & heatmap for texts"""
 import sys
 import zlib
+import itertools
+
+import pandas as pd
 
 
 def zipstance(text0, text1):
@@ -11,15 +14,21 @@ def zipstance(text0, text1):
     return zip_size(text0 + text1) - (zip_size(text0) + zip_size(text1))/2
 
 
+def dist_matrix(texts, metric):
+    dm = pd.DataFrame()
+    for combo in itertools.combinations_with_replacement(texts.keys(), 2):
+        dist = metric(texts[combo[0]], texts[combo[1]])
+        dm.loc[combo[0], combo[1]] = dist
+        dm.loc[combo[1], combo[0]] = dist
+    return dm
+
+
 if __name__ == '__main__':
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+
     from luke23 import texts
 
-    print(zipstance(texts['gsw-BE'], texts['gsw-BE']))
-    print(zipstance(texts['gsw-VS'], texts['gsw-VS']))
-    print(zipstance(texts['de-HOF'], texts['de-HOF']))
-    print(zipstance(texts['gsw-BE'], texts['gsw-VS']))
-    print(zipstance(texts['gsw-BE'], texts['de-HOF']))
-    print(zipstance(texts['gsw-BE'], texts['de-LUTH1545']))
-    print(zipstance(texts['gsw-BE'], texts['cat-BCI']))
-    print(zipstance(texts['no-DNB1930'], texts['cat-BCI']))
-    print(zipstance(texts['gsw-BE'], texts['no-DNB1930']))
+    dm = dist_matrix(texts, zipstance)
+    sns.clustermap(dm)
+    plt.show()
