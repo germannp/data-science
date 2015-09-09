@@ -28,7 +28,8 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
     from luke23 import texts
+    from colormaps import *
 
     dm = dist_matrix(texts, zipstance)
-    sns.clustermap(dm)
+    sns.clustermap(dm, standard_scale=1, xticklabels=False, cmap=viridis)
     plt.show()
