@@ -31,5 +31,6 @@ if __name__ == '__main__':
     from colormaps import *
 
     dm = dist_matrix(texts, zipstance)
-    sns.clustermap(dm, standard_scale=1, xticklabels=False, cmap=viridis)
+    hm = sns.clustermap(dm, standard_scale=None, method='ward', cmap=viridis)
+    plt.setp(hm.ax_heatmap.xaxis.get_majorticklabels(), rotation='vertical')
     plt.show()
