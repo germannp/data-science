@@ -3,7 +3,6 @@ import os
 
 
 def _read(text_file):
-    print('Reading ' + text_file.split('/')[-1])
     with open(text_file, 'r') as txt:
         return txt.read()
 
