@@ -57,8 +57,8 @@ if __name__ == '__main__':
             if key in args.version}
     else:
         selected_texts = {key: texts[key] for key in texts
-            if key in ['cat-BCI', 'gsw-ZH', 'es-CST', 'gsw-BE', 'es-NBD', 'no-DNB1930',
-                'de-HOF', 'de-LUTH1545', 'nds-REIMER', 'gsw-VS', 'fr-BDS']}
+            if key in ['cat-BCI', 'gsw-ZH', 'es-CST', 'gsw-BE', 'es-CST', 'es-NBD',
+                'no-DNB1930', 'de-HOF', 'de-LUTH1545', 'nds-REIMER', 'gsw-VS', 'fr-BDS']}
 
     if selected_texts:
         dm = dist_matrix(selected_texts, zipstance)
