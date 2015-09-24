@@ -11,7 +11,7 @@ def zipstance(text0, text1):
     def zip_size(text):
         return sys.getsizeof(zlib.compress(bytes(text, 'UTF-8'), 9))
 
-    return zip_size(text0 + text1) - (zip_size(text0) + zip_size(text1))/2
+    return 2*zip_size(text0 + text1)/(zip_size(text0) + zip_size(text1)) - 1
 
 
 def dist_matrix(texts, metric):
