@@ -14,6 +14,22 @@ class TestZipstance(unittest.TestCase):
     def test_positivity(self, a, b):
         self.assertTrue(zipstance(a, b) >= 0)
 
+    @given(text(min_size=10), text(min_size=10))
+    def test_coincidence(self, a, b):
+        aa = zipstance(a, a)
+        bb = zipstance(b, b)
+        ab = zipstance(a, b)
+        self.assertTrue(aa <= ab)
+        self.assertTrue(bb <= ab)
+
+    @given(text(min_size=10), text(min_size=10))
+    def test_symmetry(self, a, b):
+        eps = 0.04
+        ab = zipstance(a, b)
+        ba = zipstance(b, a)
+        self.assertTrue(ab <= ba + eps)
+        self.assertTrue(ab >= ba - eps)
+
     @given(text(min_size=10), text(min_size=10), text(min_size=10))
     def test_triangle_inequality(self, a, b, c):
         self.assertTrue(zipstance(a, c) <= zipstance(a, b) + zipstance(b, c))
