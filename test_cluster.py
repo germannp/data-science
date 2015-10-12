@@ -12,7 +12,7 @@ class TestZipstance(unittest.TestCase):
     def test_positivity(self, a, b):
         self.assertTrue(zipstance(a, b) >= 0)
 
-    @given(text(min_size=1), text(min_size=1), text(min_size=1))
+    @given(text(min_size=2), text(min_size=2), text(min_size=2))
     def test_triangle_inequality(self, a, b, c):
         self.assertTrue(zipstance(a, c) <= zipstance(a, b) + zipstance(b, c))
 
