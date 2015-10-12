@@ -22,9 +22,9 @@ class TestZipstance(unittest.TestCase):
         self.assertTrue(aa <= ab)
         self.assertTrue(bb <= ab)
 
-    @given(text(min_size=10), text(min_size=10))
+    @given(text(min_size=1000), text(min_size=1000))
     def test_symmetry(self, a, b):
-        eps = 0.04
+        eps = 0.02
         ab = zipstance(a, b)
         ba = zipstance(b, a)
         self.assertTrue(ab <= ba + eps)
