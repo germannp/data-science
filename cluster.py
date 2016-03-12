@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     if selected_texts:
         dm = dist_matrix(selected_texts, zipstance)
-        hm = sns.clustermap(dm, standard_scale=None, method='ward', cmap=viridis)
+        hm = sns.clustermap(dm, standard_scale=None, method='single', cmap=viridis, annot=True)
         plt.setp(hm.ax_heatmap.xaxis.get_majorticklabels(), rotation='vertical')
         plt.setp(hm.ax_heatmap.yaxis.get_majorticklabels(), rotation='horizontal')
         plt.savefig('map.png')
