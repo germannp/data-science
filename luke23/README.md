@@ -3,7 +3,7 @@ Luke 2 & 3
 
 Usage
 -----
-To print a list with the versions available from [BibleGateway.com](http://www.biblegateway.com/) run `$ python download.py` and to download a specific version run `$ python download.py version`. To load all txt-files within `luke23` as dictionary into python just `import texts from luke23`, for details see `__init__.py`.
+To print a list with the versions available from [BibleGateway.com](http://www.biblegateway.com/) run `$ python download.py` and to download a specific version run `$ python download.py version`. To load all txt-files within `luke23` as dictionary into python just `from luke23 import texts`, for details see `__init__.py`.
 
 Sources
 -------
