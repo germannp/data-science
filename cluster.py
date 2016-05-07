@@ -1,4 +1,16 @@
-"""Dendrogram & heatmap for texts"""
+"""Dendrogram & heatmap for texts
+
+usage: cluster.py [-h] [-l] [-a] [-v VERSION ...]
+
+optional arguments:
+  -h, --help        show this help message and exit
+  -l, --list        list available versions
+  -a, --all         use all available versions
+  -v, --version  VERSION ...
+                    use specified versions only
+
+If no selection is specified, a mix is used
+"""
 import sys
 import zlib
 import itertools
@@ -24,7 +36,7 @@ def dist_matrix(texts, metric):
 
 
 if __name__ == '__main__':
-    import argparse
+    from docopt import docopt
 
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -32,29 +44,16 @@ if __name__ == '__main__':
     from luke23 import texts
     from colormaps import *
 
-    parser = argparse.ArgumentParser(description='Display a clustermap',
-        epilog='If no selection is specified, a mix is used')
-    parser.add_argument('-ls', '--list', action='store_true',
-        help='list available versions')
-    parser.add_argument('-a', '--all', action='store_true',
-        help='use all available versions')
-    parser.add_argument('-l', '--language', nargs='+',
-        help='use versions of specified languages only')
-    parser.add_argument('-v', '--version', nargs='+',
-        help='use specified versions only')
-    args = parser.parse_args()
+    args = docopt(__doc__)
 
-    if args.list:
+    if args['--list']:
         selected_texts = None
         for key in texts: print(key)
-    elif args.all:
+    elif args['--all']:
         selected_texts = texts
-    elif args.language:
+    elif args['--version']:
         selected_texts = {key: texts[key] for key in texts
-            if key.startswith(tuple(args.language))}
-    elif args.version:
-        selected_texts = {key: texts[key] for key in texts
-            if key in args.version}
+            if key.startswith(tuple(args['VERSION']))}
     else:
         selected_texts = {key: texts[key] for key in texts
             if key in ['cat-BCI', 'gsw-ZH', 'es-CST', 'gsw-BE', 'es-CST', 'es-NBD',
