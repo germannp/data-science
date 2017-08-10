@@ -20,10 +20,11 @@ import pandas as pd
 
 def zipstance(text0, text1):
     """Similarity of texts based on compressability"""
-    def zip_size(text):
+
+    def zipsize(text):
         return sys.getsizeof(zlib.compress(bytes(text, 'UTF-8'), 9))
 
-    return 2*zip_size(text0 + text1)/(zip_size(text0) + zip_size(text1)) - 1
+    return 2 * zipsize(text0 + text1) / (zipsize(text0) + zipsize(text1)) - 1
 
 
 def dist_matrix(texts, metric):
@@ -47,21 +48,30 @@ if __name__ == '__main__':
 
     if args['--list']:
         selected_texts = None
-        for key in texts: print(key)
+        for key in texts:
+            print(key)
     elif args['--all']:
         selected_texts = texts
     elif args['--version']:
-        selected_texts = {key: texts[key] for key in texts
+        selected_texts = {
+            key: texts[key] for key in texts
             if key.startswith(tuple(args['VERSION']))}
     else:
-        selected_texts = {key: texts[key] for key in texts
-            if key in ['cat-BCI', 'gsw-ZH', 'es-CST', 'gsw-BE', 'es-CST', 'es-NBD',
-                'no-DNB1930', 'de-HOF', 'de-LUTH1545', 'nds-REIMER', 'gsw-VS', 'fr-BDS']}
+        selected_texts = {
+            key: texts[key] for key in texts
+            if key in [
+                'cat-BCI', 'gsw-ZH', 'es-CST', 'gsw-BE', 'es-CST', 'es-NBD',
+                'no-DNB1930', 'de-HOF', 'de-LUTH1545', 'nds-REIMER', 'gsw-VS',
+                'fr-BDS']}
 
     if selected_texts:
         dm = dist_matrix(selected_texts, zipstance)
-        hm = sns.clustermap(dm, standard_scale=None, method='single', cmap='viridis', annot=True)
-        plt.setp(hm.ax_heatmap.xaxis.get_majorticklabels(), rotation='vertical')
-        plt.setp(hm.ax_heatmap.yaxis.get_majorticklabels(), rotation='horizontal')
+        hm = sns.clustermap(
+            dm, standard_scale=None, method='single', cmap='viridis',
+            annot=True)
+        plt.setp(
+            hm.ax_heatmap.xaxis.get_majorticklabels(), rotation='vertical')
+        plt.setp(
+            hm.ax_heatmap.yaxis.get_majorticklabels(), rotation='horizontal')
         plt.savefig('map.png')
         plt.show()

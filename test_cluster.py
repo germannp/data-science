@@ -39,9 +39,11 @@ class TestZipstance(unittest.TestCase):
         """zipstance(a, x*a + (1 - x)*b) ~ 1 - x, if zipstance(a, b) ~ 1"""
         eps = 0.02
         n = 10000
-        a = ''.join([random.choice(string.ascii_letters + '. ') for _ in range(n)])
-        b = ''.join([random.choice(string.ascii_letters + '. ') for _ in range(n)])
-        dist = zipstance(a, a[0:int(ratio*n)] + b[int(ratio*n):])
+        a = ''.join([
+            random.choice(string.ascii_letters + '. ') for _ in range(n)])
+        b = ''.join([
+            random.choice(string.ascii_letters + '. ') for _ in range(n)])
+        dist = zipstance(a, a[0:int(ratio * n)] + b[int(ratio * n):])
         self.assertTrue(dist >= 1 - ratio - eps)
         self.assertTrue(dist <= 1 - ratio + eps)
 
