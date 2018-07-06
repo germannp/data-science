@@ -1,5 +1,0 @@
-lxml
-pandas
-matplotlib
-seaborn
-docopt
